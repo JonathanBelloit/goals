@@ -1,12 +1,32 @@
-import React, { useState, useEffect } from 'react'
-import { getDocs } from 'firebase/firestore';
+import React from 'react'
 
-const GoalList = () => {
+interface Goal {
+  id: number
+  text: string
+}
 
-  const [goals, setGoals] = useState([""]);
+interface GoalListProps {
+  goals: Goal[]
+  onDelete: (id: number) => void
+}
 
+const GoalList: React.FC<GoalListProps> = ({ goals, onDelete }) => {
   return (
-    <div>GoalList</div>
+    <ul className="goal-list">
+      {goals.map(goal => (
+        <li key={goal.id} className="goal-item">
+          <input type="checkbox" />
+          <span>{goal.text}</span>
+          <button
+            className="delete-btn"
+            onClick={() => onDelete(goal.id)}
+            aria-label="delete goal"
+          >
+            🗑️
+          </button>
+        </li>
+      ))}
+    </ul>
   )
 }
 

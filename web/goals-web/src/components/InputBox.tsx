@@ -2,13 +2,18 @@ import React, { useState } from 'react'
 import { db } from '../config/firebase'
 import { collection, addDoc } from 'firebase/firestore'
 
-const InputBox = () => {
+interface InputBoxProps {
+  onAdd: (text: string) => void
+}
+
+const InputBox = ({ onAdd }: InputBoxProps) => {
   const [input, setInput] = useState('')
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const colRef = collection(db, 'test')
     await addDoc(colRef, { input })
+    onAdd(input)
     setInput('')
   }
   
