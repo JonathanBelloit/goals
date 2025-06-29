@@ -1,24 +1,29 @@
 import React, { useState } from 'react'
-import { db } from '../config/firebase';
-import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query } from 'firebase/firestore';
+import { db } from '../config/firebase'
+import { collection, addDoc } from 'firebase/firestore'
 
 const InputBox = () => {
-  console.log('test')
-  const [ input, setInput ] = useState('');
-  console.log(`the input is ${input}`)
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const [input, setInput] = useState('')
 
-    console.log(`this is the submission: ${input}`)
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     const colRef = collection(db, 'test')
-    await addDoc(colRef, { input: input });
-  }    
+    await addDoc(colRef, { input })
+    setInput('')
+  }
   
   return (
-    <>
-      <input type="text" value={input} id="testInput" name="testInput" placeholder="enter text here" onChange={(e) => setInput(e.target.value)}/>
-      <button type='submit' onClick={handleSubmit}>Send</button>
-    </>
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        value={input}
+        id="testInput"
+        name="testInput"
+        placeholder="enter text here"
+        onChange={(e) => setInput(e.target.value)}
+      />
+      <button type="submit">Send</button>
+    </form>
   )
 }
 
