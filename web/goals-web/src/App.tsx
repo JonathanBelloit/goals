@@ -5,21 +5,20 @@ import GoalList from "./components/GoalList"
 
 function App() {
 
-  const [goals, setGoals] = useState<{ id: number, text: string }[]>([])
+  const [refreshFlag, setRefreshFlag] = useState(0)
 
-  const addGoal = (text: string) => {
-    setGoals([...goals, { id: Date.now(), text }])
-  }
-
-  const deleteGoal = (id: number) => {
-    setGoals(goals.filter(g => g.id !== id))
+  /**
+   * Increment refresh flag so the goal list can reload from Firestore.
+   */
+  const triggerRefresh = () => {
+    setRefreshFlag((f) => f + 1)
   }
 
   return (
     <>
       <h1>Goals</h1>
-      <InputBox onAdd={addGoal} />
-      <GoalList goals={goals} onDelete={deleteGoal} />
+      <InputBox onAdd={triggerRefresh} />
+      <GoalList refreshTrigger={refreshFlag} />
     </>
   )
 }

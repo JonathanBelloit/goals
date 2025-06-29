@@ -3,7 +3,11 @@ import { db } from '../config/firebase'
 import { collection, addDoc } from 'firebase/firestore'
 
 interface InputBoxProps {
-  onAdd: (text: string) => void
+  /**
+   * Callback triggered after a goal is successfully added.
+   * The parent can use this to refresh data from Firestore.
+   */
+  onAdd: () => void
 }
 
 const InputBox = ({ onAdd }: InputBoxProps) => {
@@ -13,7 +17,7 @@ const InputBox = ({ onAdd }: InputBoxProps) => {
     e.preventDefault()
     const colRef = collection(db, 'test')
     await addDoc(colRef, { input })
-    onAdd(input)
+    onAdd()
     setInput('')
   }
   
